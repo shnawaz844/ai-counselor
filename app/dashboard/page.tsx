@@ -145,14 +145,14 @@ export default function Dashboard() {
                 className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all duration-300"
               >
                 {/* Image Container */}
-                <div className="relative h-64 bg-muted overflow-hidden">
+                <div className="relative h-64 bg-neutral-900/50 flex items-center justify-center overflow-hidden">
                   <Image
                     src={counselor.avatar_url}
                     alt={counselor.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
                 {/* Content */}

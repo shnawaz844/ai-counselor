@@ -6,13 +6,7 @@ import { useEffect, useState, Suspense } from 'react'
 import { Send, Loader2, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-
-interface Message {
-  id: string
-  role: 'user' | 'assistant'
-  content: string
-  timestamp: Date
-}
+import { useChat } from '@ai-sdk/react'
 
 interface Counselor {
   id: string
@@ -71,16 +65,16 @@ function ChatContent() {
   const searchParams = useSearchParams()
   const counselorId = searchParams.get('counselor')
   const [counselor, setCounselor] = useState<Counselor | null>(null)
-  const [messages, setMessages] = useState<Message[]>([
+  const [input, setInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [messages, setMessages] = useState<any[]>([
     {
       id: '1',
       role: 'assistant',
       content: 'Hello! I\'m your career counselor. How can I help you with your career planning today?',
-      timestamp: new Date(),
-    },
+      createdAt: new Date()
+    }
   ])
-  const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (counselorId) {
@@ -89,38 +83,53 @@ function ChatContent() {
     }
   }, [counselorId])
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!input.trim() || loading) return
+    if (!input.trim() || isLoading) return
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input,
-      timestamp: new Date(),
-    }
-
-    setMessages((prev) => [...prev, userMessage])
+    const userMsg = { id: Date.now().toString(), role: 'user', content: input, createdAt: new Date() }
+    setMessages(prev => [...prev, userMsg])
     setInput('')
-    setLoading(true)
+    setIsLoading(true)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [...messages, userMsg], counselorId })
+      })
 
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: `That's a great question about ${input}. Based on your interests, I recommend exploring various opportunities and building relevant skills in this area.`,
-        timestamp: new Date(),
+      if (!res.ok) throw new Error('API Error')
+      
+      const rawText = await res.text()
+      // Optional: Clean up Vercel Data Stream prefixes if they exist (e.g., `0:"..."\n`)
+      let cleanText = rawText
+      if (rawText.startsWith('0:')) {
+        try {
+          cleanText = JSON.parse(rawText.substring(2))
+        } catch { /* ignore */ }
       }
 
-      setMessages((prev) => [...prev, assistantMessage])
-    } catch (error) {
-      console.error('Chat error:', error)
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: cleanText,
+        createdAt: new Date()
+      }])
+    } catch (err) {
+      console.error(err)
+      setMessages(prev => [...prev, {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: "I'm sorry, I encountered an error connecting to my server. Please try again.",
+        createdAt: new Date()
+      }])
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
 
   if (!counselor) {
     return (
@@ -175,14 +184,14 @@ function ChatContent() {
                     : 'bg-card border border-primary/20 text-foreground rounded-bl-none'
                 }`}
               >
-                <p className="text-sm">{msg.content}</p>
+                <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
                 <p className={`text-xs mt-2 ${msg.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                  {msg.timestamp.toLocaleTimeString()}
+                  {msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString() : new Date().toLocaleTimeString()}
                 </p>
               </div>
             </div>
           ))}
-          {loading && (
+          {isLoading && (
             <div className="flex justify-start">
               <div className="bg-card border border-primary/20 text-foreground px-6 py-4 rounded-lg rounded-bl-none">
                 <Loader2 className="w-5 h-5 animate-spin text-primary" />
@@ -194,21 +203,21 @@ function ChatContent() {
 
       <footer className="border-t border-primary/30 bg-card/95 backdrop-blur sticky bottom-0">
         <div className="max-w-4xl mx-auto px-6 py-4 w-full">
-          <form onSubmit={handleSendMessage} className="flex gap-3">
+          <form onSubmit={handleSubmit} className="flex gap-3">
             <input
               type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
+              value={input || ""}
+              onChange={handleInputChange}
               placeholder="Type your question here..."
-              disabled={loading}
+              disabled={isLoading}
               className="flex-1 px-4 py-3 border border-primary/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-muted bg-background text-foreground placeholder-muted-foreground"
             />
             <Button
               type="submit"
-              disabled={loading || !input.trim()}
+              disabled={isLoading || !(input || "").trim()}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 shadow-lg hover:shadow-[0_0_20px_rgba(0,255,159,0.4)]"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>
           </form>
         </div>
