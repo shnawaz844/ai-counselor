@@ -15,6 +15,7 @@ interface Counselor {
 }
 
 const COUNSELORS: Counselor[] = [
+
   {
     id: '1',
     name: 'Engineering Career Advisor',
@@ -81,14 +82,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition group z-50">
             <div className="relative w-10 h-10 sm:w-12 sm:h-12 overflow-hidden rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:scale-105 transition-transform">
-               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-OGfdWEWq236e8EPK5HhGW8ckUQaqXU.png" alt="Parth Gautam Foundation" className="w-full h-full object-cover" />
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-OGfdWEWq236e8EPK5HhGW8ckUQaqXU.png" alt="Parth Gautam Foundation" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col justify-center">
               <div className="font-extrabold text-sm sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">PARTH GAUTAM</div>
               <div className="text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-widest font-medium">AI Career Guide</div>
             </div>
           </Link>
-          
+
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-4">
             <Link href="/history">
@@ -104,7 +105,7 @@ export default function HomePage() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="md:hidden p-2 text-neutral-300 hover:text-white z-50 transition-transform active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -167,7 +168,7 @@ export default function HomePage() {
             </span>
             AI-Powered Career Guidance
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
             Talk to AI Counselors.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
@@ -190,8 +191,8 @@ export default function HomePage() {
         </div>
 
         {/* Scroll Indicator */}
-        <div 
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-4 cursor-pointer opacity-60 hover:opacity-100 transition-opacity" 
+        <div
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-4 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
           onClick={scrollToCounselors}
         >
           <span className="text-xs text-neutral-400 uppercase tracking-widest font-semibold">Explore</span>
@@ -249,7 +250,7 @@ export default function HomePage() {
                     className="object-cover group-hover:scale-105 group-hover:rotate-1 transition-all duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent opacity-90" />
-                  
+
                   {/* Floating specialty badge */}
                   <div className="absolute top-4 right-4 px-3 py-1 bg-neutral-950/70 backdrop-blur-md rounded-full border border-white/10 text-xs font-semibold text-emerald-300">
                     {counselor.specialization.split(',')[0]}
