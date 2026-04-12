@@ -77,7 +77,7 @@ export default function HomePage() {
         <div className="absolute top-[30%] right-[-10%] w-[40%] h-[60%] bg-teal-500/10 blur-[150px] rounded-full mix-blend-screen" />
       </div>
 
-      {/* Navigation */}
+      {/* Navigationsssss */}
       <nav className="fixed top-0 w-full border-b border-white/5 bg-neutral-950/70 backdrop-blur-xl z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition group z-50">
