@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
@@ -125,7 +125,7 @@ If a student asks for Entrepreneurship, Startups, MBA, BBA, or Business incubati
 - MBA Specializations: Many colleges, including Invertis and KCMT, offer specializations in Entrepreneurship, Finance, and Marketing.
 - Industry Connect: Institutes like ANA Group provide mandatory internships for practical business exposure.`;
 
-                const invertisKb = `\n\n### Knowledge Base: Invertis University Complete Course Guide
+                const invertisKb = `nn### Knowledge Base: Invertis University Complete Course Guide
 If a student asks specifically about courses, admission, or degrees offered at Invertis University, you MUST provide these accurate details:
 **Undergraduate Courses (UG):**
 - Engineering & Tech: B.Tech (CSE, Mechanical, Civil, Electrical, ECE), BCA, BCA (Hons) in Data Science.
@@ -146,7 +146,7 @@ If a student asks specifically about courses, admission, or degrees offered at I
 - PG Management: MBA admissions based on IUCET, CAT, MAT, XAT, or ATMA scores.
 - Application Timeline: Generally starts around December/March for the following academic session.`;
 
-                const srmsKb = `\n\n### Knowledge Base: Shri Ram Murti Smarak (SRMS) Group of Institutions
+                const srmsKb = `nn### Knowledge Base: Shri Ram Murti Smarak (SRMS) Group of Institutions
 If a student asks specifically about courses or degrees offered at the SRMS Group of Institutions (Bareilly), you MUST provide these accurate details:
 **Engineering & Technology (SRMS CET & CETR):**
 - B.Tech (4 Years): Computer Science & Engineering (CSE), Electronics & Communication, Mechanical, Electrical & Electronics, Information Technology, and CSE (Cyber Security).
@@ -169,7 +169,7 @@ If a student asks specifically about courses or degrees offered at the SRMS Grou
 **Hospitality:**
 - BHMCT: Bachelor of Hotel Management and Catering Technology.`;
 
-                const ssvgiKb = `\n\n### Knowledge Base: Shri Siddhi Vinayak Group of Institutions (SSVGI)
+                const ssvgiKb = `nn### Knowledge Base: Shri Siddhi Vinayak Group of Institutions (SSVGI)
 If a student asks specifically about courses or degrees offered at SSVGI (Bareilly), you MUST provide these accurate details:
 **Engineering (B.Tech - 4 Years):** Computer Science & Engineering, Information Technology, Mechanical Engineering, Electrical Engineering, Electronics & Communication Engineering, Civil Engineering.
 **Management & Computer Applications:** MBA, BBA, BCA, B.Com (Hons).
@@ -200,24 +200,43 @@ If a student asks specifically about courses or degrees offered at SSVGI (Bareil
     });
 
     if (!response.ok) {
-      const text = await response.text();
-      console.error("OpenRouter error:", text);
-      return new Response(JSON.stringify({ error: "API Failure" }), { status: 500 });
+      const errorText = await response.text();
+      console.error("OpenRouter Error Details:", errorText);
+      
+      let errorMsg = "The AI service is currently unavailable.";
+      try {
+        const parsed = JSON.parse(errorText);
+        if (parsed.error?.message) errorMsg = `AI Error: ${parsed.error.message}`;
+      } catch (e) { /* fallback to default */ }
+
+      return new Response(JSON.stringify({ error: errorMsg, details: errorText }), { 
+        status: response.status,
+        headers: { "Content-Type": "application/json" }
+      });
     }
 
     const data = await response.json();
+    
+    if (!data.choices?.[0]?.message?.content) {
+      console.error("Malformed response from OpenRouter:", data);
+      return new Response(JSON.stringify({ error: "Invalid response from AI provider" }), { status: 502 });
+    }
     // Format response as Vercel AI Data Stream Protocol
-    return new Response(`0:${JSON.stringify(data.choices[0].message.content)}\n`, {
+    return new Response(`0:${JSON.stringify(data.choices[0].message.content)}n`, {
       headers: {
         "Content-Type": "text/plain",
         "x-vercel-ai-data-stream": "v1"
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Chat API error:', error);
-    return new Response(JSON.stringify({ error: 'Chat failed' }), {
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Chat failed',
+      details: error.toString()
+    }), {
       status: 500,
+      headers: { "Content-Type": "application/json" }
     });
   }
 }

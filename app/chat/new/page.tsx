@@ -99,15 +99,20 @@ function ChatContent() {
         body: JSON.stringify({ messages: [...messages, userMsg], counselorId })
       })
 
-      if (!res.ok) throw new Error('API Error')
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'API Error');
+      }
       
       const rawText = await res.text()
       // Optional: Clean up Vercel Data Stream prefixes if they exist (e.g., `0:"..."\n`)
       let cleanText = rawText
       if (rawText.startsWith('0:')) {
         try {
-          cleanText = JSON.parse(rawText.substring(2))
-        } catch { /* ignore */ }
+          cleanText = JSON.parse(rawText.substring(2).trim())
+        } catch (e) {
+          console.error("Failed to parse AI response:", e);
+        }
       }
 
       setMessages(prev => [...prev, {
@@ -116,12 +121,14 @@ function ChatContent() {
         content: cleanText,
         createdAt: new Date()
       }])
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: "I'm sorry, I encountered an error connecting to my server. Please try again.",
+        content: err.message === 'API Error' 
+          ? "I'm sorry, I encountered an error connecting to my server. Please try again."
+          : `I'm sorry, I encountered an error: ${err.message}`,
         createdAt: new Date()
       }])
     } finally {

@@ -134,7 +134,7 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0">
           <div className="relative w-full h-full">
             {/* Desktop Image */}
-            <div className="hidden md:block absolute inset-0 opacity-30 mix-blend-luminosity">
+            <div className="hidden md:block absolute inset-0 opacity-60">
               <Image
                 src="/hero-desktop.png"
                 alt="AI Guidance Platform"
@@ -144,7 +144,7 @@ export default function HomePage() {
               />
             </div>
             {/* Mobile Image */}
-            <div className="block md:hidden absolute inset-0 opacity-30 mix-blend-luminosity">
+            <div className="block md:hidden absolute inset-0 opacity-60">
               <Image
                 src="/hero-mobile.jpg"
                 alt="AI Guidance Platform Mobile"
@@ -153,9 +153,9 @@ export default function HomePage() {
                 className="object-cover object-center"
               />
             </div>
-            {/* Superior gradient overlays for depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/70 to-neutral-950/30" />
-            <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-transparent to-neutral-950" />
+            {/* Gradient overlays for depth - lighter to keep image visible */}
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/60 via-transparent to-neutral-950/60" />
           </div>
         </div>
 
@@ -169,7 +169,7 @@ export default function HomePage() {
             AI-Powered Career Guidance
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+          <h1 className="text-5xl md:text-5xl lg:text-5xl font-extrabold text-white mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
             Talk to AI Counselors.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
               Shape Your Future.
@@ -247,7 +247,7 @@ export default function HomePage() {
                     src={counselor.avatar_url}
                     alt={counselor.name}
                     fill
-                    className="object-cover group-hover:scale-105 group-hover:rotate-1 transition-all duration-700 ease-out"
+                    className="object-cover object-top group-hover:scale-105 group-hover:rotate-1 transition-all duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent opacity-90" />
 
