@@ -20,7 +20,7 @@ const COUNSELORS: Counselor[] = [
     name: 'Engineering Career Advisor',
     specialization: 'Engineering, Technology, IT',
     description: 'Expert guidance for IIT, NIT, and tech career paths',
-    avatar_url: '/counselors/engineering.jpg',
+    avatar_url: '/counselors/male3.png',
   },
   {
     id: '2',
@@ -41,7 +41,7 @@ const COUNSELORS: Counselor[] = [
     name: 'Arts & Humanities Guide',
     specialization: 'Arts, Humanities, Social Sciences',
     description: 'Guidance for liberal arts, social sciences, and humanities',
-    avatar_url: '/counselors/arts.jpg',
+    avatar_url: '/counselors/cs.png',
   },
   {
     id: '5',
@@ -55,7 +55,7 @@ const COUNSELORS: Counselor[] = [
     name: 'Entrepreneurship Coach',
     specialization: 'Entrepreneurship, Startups, Business',
     description: 'Guidance for aspiring entrepreneurs and startup founders',
-    avatar_url: '/counselors/entrepreneurship.jpg',
+    avatar_url: '/counselors/male4.png',
   },
 ]
 
@@ -67,8 +67,10 @@ export default function Dashboard() {
       {/* Navigation Bar */}
       <nav className="border-b border-border bg-card sticky top-0 z-10 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-OGfdWEWq236e8EPK5HhGW8ckUQaqXU.png" alt="Parth Gautam Foundation" className="h-10" />
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition group">
+            <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center bg-card rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.1)] group-hover:scale-105 transition-transform border border-border/50">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-OGfdWEWq236e8EPK5HhGW8ckUQaqXU.png" alt="Parth Gautam Foundation" className="w-full h-full object-contain" />
+            </div>
             <span className="font-bold text-sm text-foreground hidden sm:block">Career Guide AI</span>
           </Link>
           <div className="flex items-center gap-3">
@@ -134,63 +136,59 @@ export default function Dashboard() {
         </div>
 
         {/* Counselors Grid */}
-        <div>
-          <h2 className="text-3xl font-bold text-foreground mb-2">AI Counselors</h2>
-          <p className="text-muted-foreground mb-8">Select a counselor to begin your career consultation</p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground">Select Your Counselor</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {counselors.map((counselor) => (
               <div
                 key={counselor.id}
-                className="group bg-card border border-border rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+                className="group flex flex-col bg-card border border-border rounded-3xl overflow-hidden hover:border-emerald-500/50 transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:-translate-y-2"
               >
                 {/* Image Container */}
-                <div className="relative h-64 bg-neutral-900/50 flex items-center justify-center overflow-hidden">
+                <div className="relative h-56 md:h-64 bg-neutral-800 overflow-hidden shrink-0">
                   <Image
                     src={counselor.avatar_url}
                     alt={counselor.name}
                     fill
-                    className="object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover object-top group-hover:scale-105 group-hover:rotate-1 transition-all duration-700 ease-out"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-90" />
+
+                  {/* Floating specialty badge */}
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-neutral-950/70 backdrop-blur-md rounded-full border border-white/10 text-xs font-semibold text-emerald-300">
+                    {counselor.specialization.split(',')[0]}
+                  </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-1">
-                    {counselor.name}
-                  </h3>
-                  <p className="text-sm text-primary font-medium mb-3">
-                    {counselor.specialization}
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-6 line-clamp-2">
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-emerald-400 transition-colors">{counselor.name}</h3>
+                  <p className="text-sm font-medium text-emerald-500/80 mb-4">{counselor.specialization}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-8 flex-1">
                     {counselor.description}
                   </p>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-3">
-                    <Link
-                      href={`/chat/new?counselor=${counselor.id}`}
-                      className="flex-1"
-                    >
+                  <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <Link href={`/chat/new?counselor=${counselor.id}`} className="flex-1">
                       <Button
-                        variant="outline"
-                        className="w-full border-primary/30 text-primary hover:bg-primary/5"
+                        size="default"
+                        className="w-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold gap-2 h-12 rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all duration-300"
                       >
-                        <MessageSquare className="w-4 h-4 mr-2" />
-                        Chat
+                        <MessageSquare className="w-5 h-5" />
+                        Chat Now
                       </Button>
                     </Link>
-                    <Link
-                      href={`/voice/new?counselor=${counselor.id}`}
-                      className="flex-1"
-                    >
+                    <Link href={`/voice/new?counselor=${counselor.id}`} className="flex-1">
                       <Button
+                        size="default"
                         variant="outline"
-                        className="w-full border-primary/30 text-primary hover:bg-primary/5"
+                        className="w-full bg-background border-border hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-black text-emerald-600 gap-2 h-12 rounded-xl transition-all duration-300"
                       >
-                        <Headphones className="w-4 h-4 mr-2" />
-                        Call
+                        <Headphones className="w-5 h-5" />
+                        Voice Call
                       </Button>
                     </Link>
                   </div>

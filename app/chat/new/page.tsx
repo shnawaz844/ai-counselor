@@ -153,7 +153,7 @@ function ChatContent() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-primary/30 bg-card/95 backdrop-blur sticky top-0 z-10">
+      <header className="border-b border-border bg-card/95 backdrop-blur sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/dashboard">
@@ -163,7 +163,7 @@ function ChatContent() {
               </Button>
             </Link>
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary/30">
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-border">
                 <Image
                   src={counselor.avatar_url}
                   alt={counselor.name}
@@ -185,10 +185,10 @@ function ChatContent() {
           {messages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-md px-6 py-4 rounded-lg ${
+                className={`max-w-md px-6 py-4 rounded-2xl ${
                   msg.role === 'user'
-                    ? 'bg-primary text-primary-foreground rounded-br-none shadow-lg shadow-primary/50'
-                    : 'bg-card border border-primary/20 text-foreground rounded-bl-none'
+                    ? 'bg-primary text-primary-foreground rounded-br-none shadow-lg shadow-emerald-500/10'
+                    : 'bg-card border border-border text-foreground rounded-bl-none'
                 }`}
               >
                 <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
@@ -200,7 +200,7 @@ function ChatContent() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-card border border-primary/20 text-foreground px-6 py-4 rounded-lg rounded-bl-none">
+              <div className="bg-card border border-border text-foreground px-6 py-4 rounded-2xl rounded-bl-none">
                 <Loader2 className="w-5 h-5 animate-spin text-primary" />
               </div>
             </div>
@@ -208,7 +208,7 @@ function ChatContent() {
         </div>
       </main>
 
-      <footer className="border-t border-primary/30 bg-card/95 backdrop-blur sticky bottom-0">
+      <footer className="border-t border-border bg-card/95 backdrop-blur sticky bottom-0">
         <div className="max-w-4xl mx-auto px-6 py-4 w-full">
           <form onSubmit={handleSubmit} className="flex gap-3">
             <input
@@ -222,7 +222,7 @@ function ChatContent() {
             <Button
               type="submit"
               disabled={isLoading || !(input || "").trim()}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 shadow-lg hover:shadow-[0_0_20px_rgba(0,255,159,0.4)]"
+              className="bg-primary hover:bg-emerald-600 text-white px-6 shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20"
             >
               {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>

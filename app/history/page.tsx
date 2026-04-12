@@ -32,22 +32,22 @@ export default function HistoryPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="bg-slate-800 border-b border-slate-700">
+      <header className="bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-8 h-8 text-blue-500" />
-            <span className="text-xl font-bold text-white">CareerGuidance AI</span>
+            <span className="text-xl font-bold text-foreground">CareerGuidance AI</span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/dashboard">
-              <Button variant="ghost" className="text-slate-300 hover:text-white">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
                 Dashboard
               </Button>
             </Link>
             <Link href="/profile">
-              <Button variant="ghost" className="text-slate-300 hover:text-white">
+              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
                 Profile
               </Button>
             </Link>
@@ -57,22 +57,22 @@ export default function HistoryPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-12">
-        <h1 className="text-3xl font-bold text-white mb-8">Consultation History</h1>
+        <h1 className="text-3xl font-bold text-foreground mb-8">Consultation History</h1>
 
         <Tabs defaultValue="chats" className="w-full">
-          <TabsList className="bg-slate-800 border border-slate-700">
-            <TabsTrigger value="chats" className="text-slate-300 data-[state=active]:text-white">
+          <TabsList className="bg-background border border-border">
+            <TabsTrigger value="chats" className="text-muted-foreground data-[state=active]:text-foreground">
               Text Chats
             </TabsTrigger>
-            <TabsTrigger value="voice" className="text-slate-300 data-[state=active]:text-white">
+            <TabsTrigger value="voice" className="text-muted-foreground data-[state=active]:text-foreground">
               Voice Calls
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="chats" className="mt-6">
             {chatHistory.length === 0 ? (
-              <div className="text-center py-12 bg-slate-800 rounded-lg border border-slate-700">
-                <p className="text-slate-400 mb-4">No chat conversations yet</p>
+              <div className="text-center py-12 bg-background rounded-lg border border-border">
+                <p className="text-muted-foreground mb-4">No chat conversations yet</p>
                 <Link href="/dashboard">
                   <Button className="bg-blue-600 hover:bg-blue-700">
                     Start Your First Chat
@@ -84,17 +84,17 @@ export default function HistoryPage() {
                 {chatHistory.map((chat) => (
                   <div
                     key={chat.id}
-                    className="bg-slate-800 p-4 rounded-lg border border-slate-700 flex items-center justify-between hover:border-blue-500 transition"
+                    className="bg-card p-4 rounded-lg border border-border flex items-center justify-between hover:border-emerald-500/50 transition shadow-sm"
                   >
                     <div className="flex-1">
-                      <h3 className="text-white font-semibold">{chat.counselor_name}</h3>
-                      <p className="text-sm text-slate-400">
+                      <h3 className="text-foreground font-semibold">{chat.counselor_name}</h3>
+                      <p className="text-sm text-muted-foreground">
                         {chat.message_count} messages • {new Date(chat.created_at).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="flex gap-2">
                       <Link href={`/chat/${chat.id}`}>
-                        <Button size="sm" variant="outline" className="border-slate-600">
+                        <Button size="sm" variant="outline" className="border-border">
                           View
                         </Button>
                       </Link>
@@ -114,10 +114,10 @@ export default function HistoryPage() {
 
           <TabsContent value="voice" className="mt-6">
             {voiceHistory.length === 0 ? (
-              <div className="text-center py-12 bg-slate-800 rounded-lg border border-slate-700">
-                <p className="text-slate-400 mb-4">No voice calls yet</p>
+              <div className="text-center py-12 bg-card rounded-lg border border-border">
+                <p className="text-muted-foreground mb-4">No voice calls yet</p>
                 <Link href="/dashboard">
-                  <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                     Schedule Your First Call
                   </Button>
                 </Link>
@@ -127,17 +127,17 @@ export default function HistoryPage() {
                 {voiceHistory.map((call) => (
                   <div
                     key={call.id}
-                    className="bg-slate-800 p-4 rounded-lg border border-slate-700 flex items-center justify-between hover:border-blue-500 transition"
+                    className="bg-card p-4 rounded-lg border border-border flex items-center justify-between hover:border-emerald-500/50 transition shadow-sm"
                   >
                     <div className="flex-1">
-                      <h3 className="text-white font-semibold">{call.counselor_name}</h3>
-                      <p className="text-sm text-slate-400">
+                      <h3 className="text-foreground font-semibold">{call.counselor_name}</h3>
+                      <p className="text-sm text-muted-foreground">
                         Duration: {Math.floor(call.duration / 60)}m • {new Date(call.created_at).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="flex gap-2">
                       <Link href={`/voice/${call.id}`}>
-                        <Button size="sm" variant="outline" className="border-slate-600">
+                        <Button size="sm" variant="outline" className="border-border">
                           View
                         </Button>
                       </Link>

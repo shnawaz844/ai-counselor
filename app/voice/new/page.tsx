@@ -456,11 +456,11 @@ Remember: You're building a supportive relationship, not interrogating a suspect
 
   if (!counselor) {
     return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <p className="text-xl text-neutral-400 mb-4 font-semibold">Locating counselor profile...</p>
           <Link href="/dashboard">
-            <Button variant="outline" className="border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10">Back to Dashboard</Button>
+            <Button variant="outline" className="border-border text-muted-foreground hover:bg-muted">Back to Dashboard</Button>
           </Link>
         </div>
       </div>
@@ -468,20 +468,20 @@ Remember: You're building a supportive relationship, not interrogating a suspect
   }
 
   return (
-    <div className="h-screen bg-neutral-950 flex flex-col font-sans selection:bg-emerald-500/30 overflow-hidden">
+    <div className="h-screen bg-background flex flex-col font-sans selection:bg-emerald-500/30 overflow-hidden">
       {/* Dynamic Animated Glows */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className={`absolute top-[-20%] left-[20%] w-[50%] h-[50%] blur-[120px] rounded-full mix-blend-screen transition-colors duration-1000 ${callStatus === 'active'
-            ? activeSpeaker === 'counselor' ? 'bg-emerald-500/30' : 'bg-blue-500/20'
+        <div className={`absolute top-[-20%] left-[20%] w-[50%] h-[50%] blur-[120px] rounded-full mix-blend-multiply transition-colors duration-1000 ${callStatus === 'active'
+            ? activeSpeaker === 'counselor' ? 'bg-emerald-500/10' : 'bg-blue-500/10'
             : 'bg-emerald-600/5'
           }`} />
       </div>
 
       {/* Header */}
-      <header className="border-b border-white/10 bg-neutral-950/80 backdrop-blur-xl sticky top-0 z-10 transition-all duration-300">
+      <header className="border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-10 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/dashboard">
-            <Button variant="ghost" size="sm" className="text-neutral-400 hover:text-white rounded-full hover:bg-white/10">
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground rounded-full hover:bg-muted">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
@@ -490,12 +490,12 @@ Remember: You're building a supportive relationship, not interrogating a suspect
             <p className="text-[11px] uppercase tracking-widest text-emerald-400 font-semibold mb-1">
               {callStatus === 'idle' ? 'Ready' : callStatus === 'connecting' ? 'Connecting...' : callStatus === 'active' ? 'Live Call' : 'Call Ended'}
             </p>
-            <p className="text-2xl font-black text-white tabular-nums tracking-tight">{formatDuration(duration)}</p>
+            <p className="text-2xl font-black text-foreground tabular-nums tracking-tight">{formatDuration(duration)}</p>
           </div>
           <Button
             onClick={callStatus === 'active' ? handleEndCall : undefined}
             disabled={callStatus !== 'active'}
-            className="bg-red-500 hover:bg-red-400 text-white rounded-full shadow-lg shadow-red-500/20 px-6 font-bold"
+            className="bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg shadow-red-500/10 px-6 font-bold"
           >
             <PhoneOff className="w-4 h-4 mr-2" />
             End Call
@@ -506,23 +506,23 @@ Remember: You're building a supportive relationship, not interrogating a suspect
       <div className="flex-1 flex flex-col md:flex-row gap-6 max-w-7xl mx-auto w-full px-6 py-6 relative z-10 overflow-hidden h-[calc(100vh-80px)]">
         {/* Cinematic Video/Counselor Panel (30% Width) */}
         <div className="flex-[3] flex flex-col h-full">
-          <div className={`flex-1 bg-neutral-900/40 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden flex items-center justify-center relative transition-all duration-700 ${activeSpeaker === 'counselor' ? 'shadow-[0_0_80px_rgba(16,185,129,0.15)] border-emerald-500/30' : ''
+          <div className={`flex-1 bg-card backdrop-blur-md border border-border rounded-3xl overflow-hidden flex items-center justify-center relative transition-all duration-700 ${activeSpeaker === 'counselor' ? 'shadow-[0_20px_80px_rgba(16,185,129,0.08)] border-emerald-500/30' : ''
             }`}>
 
             {/* The primary focal point view */}
             {callStatus === 'ended' ? (
               <div className="text-center animate-in fade-in zoom-in duration-500 p-6">
-                <p className="text-2xl text-white font-bold mb-2">Session Completed</p>
-                <p className="text-neutral-400 font-medium">Final Duration: {formatDuration(duration)}</p>
+                <p className="text-2xl text-foreground font-bold mb-2">Session Completed</p>
+                <p className="text-muted-foreground font-medium">Final Duration: {formatDuration(duration)}</p>
               </div>
             ) : callStatus === 'idle' ? (
               <div className="text-center animate-in fade-in zoom-in duration-500 flex flex-col items-center p-6">
-                <div className="w-32 h-32 rounded-full overflow-hidden border border-white/10 mb-6 bg-neutral-800">
-                  <Image src={counselor.avatar_url} alt={counselor.name} width={128} height={128} className="object-cover opacity-50 grayscale" />
+                <div className="w-32 h-32 rounded-full overflow-hidden border border-border mb-6 bg-muted">
+                  <Image src={counselor.avatar_url} alt={counselor.name} width={128} height={128} className="object-cover opacity-60 grayscale" />
                 </div>
-                <h2 className="text-2xl font-extrabold text-white mb-2">{counselor.name}</h2>
-                <p className="text-emerald-500/80 font-medium mb-8 uppercase tracking-widest text-xs text-center">{counselor.specialization}</p>
-                <Button onClick={startCall} className="rounded-full h-14 px-8 text-base font-bold bg-emerald-500 hover:bg-emerald-400 text-neutral-950 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all">
+                <h2 className="text-2xl font-extrabold text-foreground mb-2">{counselor.name}</h2>
+                <p className="text-emerald-600 font-medium mb-8 uppercase tracking-widest text-xs text-center">{counselor.specialization}</p>
+                <Button onClick={startCall} className="rounded-full h-14 px-8 text-base font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-[0_10px_30px_rgba(16,185,129,0.2)] hover:shadow-[0_15px_50px_rgba(16,185,129,0.3)] hover:-translate-y-1 transition-all">
                   <Phone className="w-5 h-5 mr-2" />
                   Start Call
                 </Button>
@@ -532,10 +532,10 @@ Remember: You're building a supportive relationship, not interrogating a suspect
 
                 {/* Connecting state */}
                 {callStatus === 'connecting' && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/80 backdrop-blur-sm z-20">
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-20">
                     <div className="flex flex-col items-center gap-4">
                       <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
-                      <span className="text-emerald-400 font-semibold uppercase tracking-widest text-sm">Connecting...</span>
+                      <span className="text-emerald-600 font-semibold uppercase tracking-widest text-sm">Connecting...</span>
                     </div>
                   </div>
                 )}
@@ -558,17 +558,17 @@ Remember: You're building a supportive relationship, not interrogating a suspect
                   </div>
                 </div>
 
-                <h2 className="text-xl font-extrabold text-white mb-2">{counselor.name}</h2>
-                <p className="text-emerald-500/80 font-semibold mb-6 tracking-widest uppercase text-xs">
+                <h2 className="text-xl font-extrabold text-foreground mb-2">{counselor.name}</h2>
+                <p className="text-emerald-600 font-semibold mb-6 tracking-widest uppercase text-xs">
                   {activeSpeaker === 'counselor' ? 'Speaking...' : 'Listening...'}
                 </p>
 
                 {/* Control Panel */}
-                <div className="flex gap-4 justify-center bg-neutral-950/50 backdrop-blur-xl px-4 py-3 rounded-full border border-white/5">
+                <div className="flex gap-4 justify-center bg-background/50 backdrop-blur-xl px-4 py-3 rounded-full border border-border">
                   <Button
                     onClick={handleMute}
                     variant={isMuted ? 'destructive' : 'secondary'}
-                    className={`rounded-full w-12 h-12 p-0 ${!isMuted && 'bg-white/10 hover:bg-white/20 text-white'}`}
+                    className={`rounded-full w-12 h-12 p-0 ${!isMuted && 'bg-muted hover:bg-muted/80 text-foreground'}`}
                   >
                     {isMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                   </Button>
@@ -579,17 +579,17 @@ Remember: You're building a supportive relationship, not interrogating a suspect
         </div>
 
         {/* Real-time Transcription Panel (70% Width) */}
-        <div className="flex-[7] flex flex-col bg-neutral-900/40 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden h-full">
-          <div className="border-b border-white/5 px-6 py-5 flex items-center justify-between bg-white/[0.02]">
+        <div className="flex-[7] flex flex-col bg-card backdrop-blur-md border border-border rounded-3xl overflow-hidden h-full">
+          <div className="border-b border-border px-6 py-5 flex items-center justify-between bg-muted/20">
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h3 className="font-bold text-white text-lg">Live AI Transcript</h3>
+              <h3 className="font-bold text-foreground text-lg">Live AI Transcript</h3>
             </div>
             <Button
               size="sm"
               variant="outline"
               onClick={handleCopyTranscript}
-              className="text-neutral-300 hover:text-white border-white/10 hover:bg-white/10 rounded-full bg-transparent"
+              className="text-muted-foreground hover:text-foreground border-border hover:bg-muted rounded-full bg-transparent"
             >
               <Copy className="w-3.5 h-3.5 mr-2" />
               Copy
@@ -598,7 +598,7 @@ Remember: You're building a supportive relationship, not interrogating a suspect
 
           <div ref={transcriptRef} className="flex-1 overflow-y-auto px-6 py-6 space-y-6 scroll-smooth">
             {transcriptions.length === 0 && !interimText ? (
-              <div className="h-full flex items-center justify-center text-neutral-500 text-sm font-medium">
+              <div className="h-full flex items-center justify-center text-muted-foreground text-sm font-medium">
                 Transcript will appear here...
               </div>
             ) : (
@@ -606,8 +606,8 @@ Remember: You're building a supportive relationship, not interrogating a suspect
                 {transcriptions.map((trans) => (
                   <div key={trans.id} className={`flex flex-col ${trans.speaker === 'user' ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-2 fade-in duration-300`}>
                     <div className={`px-5 py-3 rounded-2xl max-w-[85%] ${trans.speaker === 'user'
-                        ? 'bg-blue-600/20 border border-blue-500/30 text-blue-100 rounded-tr-sm'
-                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-100 rounded-tl-sm'
+                        ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
+                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
                       }`}>
                       <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${trans.speaker === 'user' ? 'text-blue-400' : 'text-emerald-400'
                         }`}>
@@ -622,8 +622,8 @@ Remember: You're building a supportive relationship, not interrogating a suspect
                 {interimText && (
                   <div className={`flex flex-col ${interimText.speaker === 'user' ? 'items-end' : 'items-start'} animate-pulse`}>
                     <div className={`px-5 py-3 rounded-2xl max-w-[85%] opacity-70 ${interimText.speaker === 'user'
-                        ? 'bg-blue-600/20 border border-blue-500/30 text-blue-100 rounded-tr-sm'
-                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-100 rounded-tl-sm'
+                        ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
+                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
                       }`}>
                       <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${interimText.speaker === 'user' ? 'text-blue-400' : 'text-emerald-400'
                         }`}>
@@ -637,8 +637,8 @@ Remember: You're building a supportive relationship, not interrogating a suspect
             )}
           </div>
 
-          <div className="border-t border-white/5 px-6 py-4 bg-white/[0.02]">
-            <p className="text-xs text-neutral-400 font-medium tracking-wide flex items-center gap-2">
+          <div className="border-t border-border px-6 py-4 bg-muted/20">
+            <p className="text-xs text-muted-foreground font-medium tracking-wide flex items-center gap-2">
               {callStatus === 'connecting' && <><Loader2 className="w-3 h-3 animate-spin" /> Connecting to Vapi Engine...</>}
               {callStatus === 'active' && '● Recording & analyzing...'}
               {callStatus === 'idle' && 'Waiting to start...'}
@@ -653,7 +653,7 @@ Remember: You're building a supportive relationship, not interrogating a suspect
 
 export default function VoiceCallPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-neutral-950 flex items-center justify-center"><Loader2 className="w-8 h-8 text-emerald-500 animate-spin" /></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><Loader2 className="w-8 h-8 text-emerald-500 animate-spin" /></div>}>
       <VoiceCallContent />
     </Suspense>
   )
