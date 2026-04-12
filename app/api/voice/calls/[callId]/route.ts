@@ -1,15 +1,16 @@
+export const dynamic = 'force-dynamic'
 import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { callId: string } }
+  { params }: { params: Promise<{ callId: string }> }
 ) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
   try {
+    const { callId } = await params
     const { status, duration, notes } = await req.json()
 
     const updates: any = {
@@ -31,7 +32,7 @@ export async function PATCH(
     const { data, error } = await supabase
       .from('voice_calls')
       .update(updates)
-      .eq('id', params.callId)
+      .eq('id', callId)
       .select()
       .single()
 
@@ -53,14 +54,19 @@ export async function PATCH(
 
 export async function GET(
   req: Request,
-  { params }: { params: { callId: string } }
+  { params }: { params: Promise<{ callId: string }> }
 ) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
   try {
+    const { callId } = await params
     // Fetch call details and transcriptions
     const { data: call, error: callError } = await supabase
       .from('voice_calls')
       .select('*')
-      .eq('id', params.callId)
+      .eq('id', callId)
       .single()
 
     if (callError) {
@@ -74,7 +80,7 @@ export async function GET(
     const { data: transData, error: transError } = await supabase
       .from('transcriptions')
       .select('*')
-      .eq('call_id', params.callId)
+      .eq('call_id', callId)
       .order('timestamp', { ascending: true })
 
     if (transError) {
