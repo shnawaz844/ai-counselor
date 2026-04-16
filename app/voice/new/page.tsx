@@ -28,7 +28,7 @@ const COUNSELORS: Counselor[] = [
     id: '1',
     name: 'Engineering Career Advisor',
     specialization: 'Engineering, Technology, IT',
-    avatar_url: '/counselors/engineering.jpg',
+    avatar_url: '/counselors/engineering.png',
     agentPrompt: "Hello! I am your Engineering Career Advisor. I am here to guide you in your career planning. How can I help you today?",
   },
   {
@@ -49,7 +49,7 @@ const COUNSELORS: Counselor[] = [
     id: '4',
     name: 'Arts & Humanities Guide',
     specialization: 'Arts, Humanities, Social Sciences',
-    avatar_url: '/counselors/arts.jpg',
+    avatar_url: '/counselors/cs.png',
     agentPrompt: "Hi ! I am your Arts & Humanities Guide. I am here to guide you in your career planning. How can I help you today?",
   },
   {
@@ -63,7 +63,7 @@ const COUNSELORS: Counselor[] = [
     id: '6',
     name: 'Entrepreneurship Coach',
     specialization: 'Entrepreneurship, Startups, Business',
-    avatar_url: '/counselors/entrepreneurship.jpg',
+    avatar_url: '/counselors/male4.png',
     agentPrompt: "Hello! I am your Entrepreneurship Coach. I am here to guide you in your career planning. How can I help you today?",
   },
 ]
@@ -164,20 +164,37 @@ function VoiceCallContent() {
             setInterimText(null)
             setTranscriptions(prev => {
               const last = prev[prev.length - 1];
-              // If the last message is from the SAME speaker, merge them to avoid chopped up bubbles
-              if (last && last.speaker === message.role) {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                  ...last,
-                  text: `${last.text.trim()} ${message.transcript.trim()}`
+              const role = message.role === 'user' ? 'user' : 'counselor';
+              const text = message.transcript.trim();
+              const isQuestion = text.includes('?') || text.includes('¿');
+
+              // Logic for counselor: Group info into points, but questions are separate
+              if (role === 'counselor' && last && last.speaker === 'counselor') {
+                const lastWasQuestion = last.text.trim().endsWith('?');
+
+                if (!isQuestion && !lastWasQuestion) {
+                  // Merge as a new bullet point in the existing bubble
+                  const updated = [...prev];
+                  const bulletedText = text.startsWith('•') ? text : `• ${text}`;
+                  updated[updated.length - 1] = {
+                    ...last,
+                    text: `${last.text}\n${bulletedText}`
+                  };
+                  return updated;
                 }
-                return updated;
               }
-              // Otherwise, create a new bubble
+
+              // Otherwise create a new bubble
+              // Add a bullet if it's info from the counselor
+              let finalChatText = text;
+              if (role === 'counselor' && !isQuestion) {
+                finalChatText = `• ${text}`;
+              }
+
               return [...prev, {
                 id: Date.now().toString(),
-                speaker: message.role === 'user' ? 'user' : 'counselor',
-                text: message.transcript,
+                speaker: role,
+                text: finalChatText,
                 timestamp: duration
               }]
             })
@@ -241,13 +258,13 @@ Counseling Flow:
 5. Provide 2-3 actionable advice steps.
 6. Thank them warmly and mention you are always here to help.
 
-Behavior Guidelines:
-- Speak as a real human expert career counselor would on a 1-on-1 coaching call.
-- Keep responses natural, warm, and highly conversational.
-- Listen actively and express empathy if they are confused about their future.
-- Don't be overly formal or robotic.
-- Keep the call focused but not rushed (aim for 5-8 minutes).
-- End on a highly positive, encouraging note.
+- BE EXTREMELY CONVERSATIONAL: You are a human counselor talking to a student. Do NOT just list facts.
+- ONE QUESTION AT A TIME: Always wait for the student to speak before diving into long explanations.
+- ASK, DON'T TELL: If you have information to share, share it in 1-2 brief sentences and then ASK a follow-up question.
+- EMPATHY FIRST: If a student is confused, acknowledge their feelings before giving advice.
+- NO INFO-DUMPING: Avoid giving long lists of colleges unless the student specifically asks "Tell me about colleges".
+- NATURAL FLOW: Keep your responses short (under 30 seconds) to maintain a natural conversation flow.
+- SUPPORTIVE: Your goal is to keep the student engaged, not to finish a checklist.
 
 Language & Communication Style:
 - You are strictly bilingual and exceptionally comfortable speaking in English, Hindi, or Hinglish (Mix of both).
@@ -258,7 +275,7 @@ Language & Communication Style:
 - Maintain professionalism and deep empathy regardless of the language used.
 
 ${(() => {
-    const engKb = `### Knowledge Base: Bareilly Engineering Colleges
+                  const engKb = `### Knowledge Base: Bareilly Engineering Colleges
 If a student asks for B.Tech or engineering colleges in or around Bareilly, you MUST recommend these top institutions with their specific details:
 1. Invertis University: Known for varied engineering courses and good infrastructure.
 2. Shri Ram Murti Smarak College of Engineering and Technology (SRMSCET): Highly regarded private institution for B.Tech in CSE and other streams.
@@ -267,7 +284,7 @@ If a student asks for B.Tech or engineering colleges in or around Bareilly, you 
 5. Shri Siddhi Vinayak Group of Institutions (SSVGI): Offers B.Tech in Civil, Electrical, and other disciplines.
 6. Mahatma Jyotiba Phule Rohilkhand University (MJPRU): Government university with a prestigious Department of Engineering and Technology.`;
 
-    const medKb = `### Knowledge Base: Bareilly Medical & Healthcare Colleges
+                  const medKb = `### Knowledge Base: Bareilly Medical & Healthcare Colleges
 If a student asks for Medical, Pharmacy, Paramedical, or Nursing colleges in or around Bareilly, you MUST recommend these top institutions:
 **Medical Institutes (MBBS, MD, MS, BAMS):**
 - Shri Ram Murti Smarak Institute of Medical Sciences (SRMS): Known for MBBS, MD, MS, and nursing, located on Nainital Road.
@@ -286,7 +303,7 @@ If a student asks for Medical, Pharmacy, Paramedical, or Nursing colleges in or 
 **Paramedical & Nursing Institutes:**
 - DPMI Delhi Paramedical & Management Institute, Indian Paramedical Institute, Asian College of Nursing, SM Bareilly Para-Medical Institute, & G K Group of Institutions.`;
 
-    const comKb = `### Knowledge Base: Bareilly Commerce, Business, & Finance Colleges
+                  const comKb = `### Knowledge Base: Bareilly Commerce, Business, & Finance Colleges
 If a student asks for Commerce, Management, BBA, B.Com, or Finance colleges/tutors in or around Bareilly, you MUST recommend these top institutions:
 **Top Commerce & Management Colleges:**
 - Khandelwal College of Management Science & Technology (KCMT): Known for management studies and industry MoUs.
@@ -306,7 +323,7 @@ If a student asks for Commerce, Management, BBA, B.Com, or Finance colleges/tuto
 - Courses: B.Com (Hons), B.Com (Pass), BBA, MBA, and various professional certificate programs.
 - Admissions: Generally merit-based or through entrance exams like CUET.`;
 
-    const artsKb = `### Knowledge Base: Bareilly Arts, Humanities, & Social Sciences Colleges
+                  const artsKb = `### Knowledge Base: Bareilly Arts, Humanities, & Social Sciences Colleges
 If a student asks for Arts, Humanities, Social Sciences, BA, MA, or related degrees in or around Bareilly, you MUST recommend these top institutions:
 **Top Arts & Humanities Universities/Colleges:**
 - Bareilly College, Rampur Garden: Offers BA and various PG courses.
@@ -322,7 +339,7 @@ If a student asks for Arts, Humanities, Social Sciences, BA, MA, or related degr
 - Sardar Ballabh Bhai Patel Group of Institutions: Located in Bhojipura.
 - Ganga Sheel Mahavidhyalaya: Offers B.A. courses.`;
 
-    const csKb = `### Knowledge Base: Bareilly CS, AI, & Software Development Colleges
+                  const csKb = `### Knowledge Base: Bareilly CS, AI, & Software Development Colleges
 If a student asks for Computer Science, CS, AI, Machine Learning, Data Science, or Software Development colleges/institutes in or around Bareilly, you MUST recommend these top institutions:
 **Top Engineering & Tech Colleges for CS/AI:**
 - Invertis University: Offers specialized B.Tech (CSE) in AI & ML, Data Science, and BCA in Artificial Intelligence.
@@ -337,7 +354,7 @@ If a student asks for Computer Science, CS, AI, Machine Learning, Data Science, 
 - Aptech Computer Education: Offers specialized training in Artificial Intelligence.
 - Rajeev Gandhi Computer Training Institute: Focuses on computer skills and various IT courses.`;
 
-    const entKb = `### Knowledge Base: Bareilly Entrepreneurship, Startups, & Business Colleges
+                  const entKb = `### Knowledge Base: Bareilly Entrepreneurship, Startups, & Business Colleges
 If a student asks for Entrepreneurship, Startups, MBA, BBA, or Business incubation colleges/institutes in or around Bareilly, you MUST recommend these top institutions:
 **Top Business & Entrepreneurship Colleges:**
 - Invertis University: Known for its incubation centre, supporting startups and innovation.
@@ -353,7 +370,7 @@ If a student asks for Entrepreneurship, Startups, MBA, BBA, or Business incubati
 - MBA Specializations: Many colleges, including Invertis and KCMT, offer specializations in Entrepreneurship, Finance, and Marketing.
 - Industry Connect: Institutes like ANA Group provide mandatory internships for practical business exposure.`;
 
-    const invertisKb = `\n\n### Knowledge Base: Invertis University Complete Course Guide
+                  const invertisKb = `\n\n### Knowledge Base: Invertis University Complete Course Guide
 If a student asks specifically about courses, admission, or degrees offered at Invertis University, you MUST provide these accurate details:
 **Undergraduate Courses (UG):**
 - Engineering & Tech: B.Tech (CSE, Mechanical, Civil, Electrical, ECE), BCA, BCA (Hons) in Data Science.
@@ -374,7 +391,7 @@ If a student asks specifically about courses, admission, or degrees offered at I
 - PG Management: MBA admissions based on IUCET, CAT, MAT, XAT, or ATMA scores.
 - Application Timeline: Generally starts around December/March for the following academic session.`;
 
-    const srmsKb = `\n\n### Knowledge Base: Shri Ram Murti Smarak (SRMS) Group of Institutions
+                  const srmsKb = `\n\n### Knowledge Base: Shri Ram Murti Smarak (SRMS) Group of Institutions
 If a student asks specifically about courses or degrees offered at the SRMS Group of Institutions (Bareilly), you MUST provide these accurate details:
 **Engineering & Technology (SRMS CET & CETR):**
 - B.Tech (4 Years): Computer Science & Engineering (CSE), Electronics & Communication, Mechanical, Electrical & Electronics, Information Technology, and CSE (Cyber Security).
@@ -397,7 +414,7 @@ If a student asks specifically about courses or degrees offered at the SRMS Grou
 **Hospitality:**
 - BHMCT: Bachelor of Hotel Management and Catering Technology.`;
 
-    const ssvgiKb = `\n\n### Knowledge Base: Shri Siddhi Vinayak Group of Institutions (SSVGI)
+                  const ssvgiKb = `\n\n### Knowledge Base: Shri Siddhi Vinayak Group of Institutions (SSVGI)
 If a student asks specifically about courses or degrees offered at SSVGI (Bareilly), you MUST provide these accurate details:
 **Engineering (B.Tech - 4 Years):** Computer Science & Engineering, Information Technology, Mechanical Engineering, Electrical Engineering, Electronics & Communication Engineering, Civil Engineering.
 **Management & Computer Applications:** MBA, BBA, BCA, B.Com (Hons).
@@ -407,16 +424,16 @@ If a student asks specifically about courses or degrees offered at SSVGI (Bareil
 **Science & Other Courses:** B.Sc. PCM (Physics, Chemistry, Maths), B.Sc. ZBC (Zoology, Botany, Chemistry), B.Sc. Bio-Tech, B.Sc. Home Science.
 **Polytechnic:** Diploma in Engineering (various specializations like Civil, Mechanical, Electrical).`;
 
-    switch(counselorId) {
-       case '1': return engKb + invertisKb + srmsKb + ssvgiKb;
-       case '2': return medKb + srmsKb + ssvgiKb;
-       case '3': return comKb + invertisKb + srmsKb + ssvgiKb;
-       case '4': return artsKb + invertisKb;
-       case '5': return csKb + invertisKb + srmsKb + ssvgiKb;
-       case '6': return entKb + invertisKb + srmsKb + ssvgiKb;
-       default: return engKb + medKb + comKb;
-    }
-  })()}
+                  switch (counselorId) {
+                    case '1': return engKb + invertisKb + srmsKb + ssvgiKb;
+                    case '2': return medKb + srmsKb + ssvgiKb;
+                    case '3': return comKb + invertisKb + srmsKb + ssvgiKb;
+                    case '4': return artsKb + invertisKb;
+                    case '5': return csKb + invertisKb + srmsKb + ssvgiKb;
+                    case '6': return entKb + invertisKb + srmsKb + ssvgiKb;
+                    default: return engKb + medKb + comKb;
+                  }
+                })()}
 
 Remember: You're building a supportive relationship, not interrogating a suspect. Make the student feel incredibly comfortable sharing their career fears while gathering the information you need.`
             }
@@ -472,8 +489,8 @@ Remember: You're building a supportive relationship, not interrogating a suspect
       {/* Dynamic Animated Glows */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className={`absolute top-[-20%] left-[20%] w-[50%] h-[50%] blur-[120px] rounded-full mix-blend-multiply transition-colors duration-1000 ${callStatus === 'active'
-            ? activeSpeaker === 'counselor' ? 'bg-emerald-500/10' : 'bg-blue-500/10'
-            : 'bg-emerald-600/5'
+          ? activeSpeaker === 'counselor' ? 'bg-emerald-500/10' : 'bg-blue-500/10'
+          : 'bg-emerald-600/5'
           }`} />
       </div>
 
@@ -606,14 +623,14 @@ Remember: You're building a supportive relationship, not interrogating a suspect
                 {transcriptions.map((trans) => (
                   <div key={trans.id} className={`flex flex-col ${trans.speaker === 'user' ? 'items-end' : 'items-start'} animate-in slide-in-from-bottom-2 fade-in duration-300`}>
                     <div className={`px-5 py-3 rounded-2xl max-w-[85%] ${trans.speaker === 'user'
-                        ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
-                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
+                      ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
+                      : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
                       }`}>
                       <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${trans.speaker === 'user' ? 'text-blue-400' : 'text-emerald-400'
                         }`}>
                         {trans.speaker === 'user' ? 'You' : counselor.name.split(' ')[0]}
                       </p>
-                      <p className="text-[15px] leading-relaxed font-medium">{trans.text}</p>
+                      <p className="text-[15px] leading-relaxed font-medium whitespace-pre-line">{trans.text}</p>
                     </div>
                     <p className="text-[10px] text-neutral-500 mt-2 font-semibold">{formatDuration(trans.timestamp)}</p>
                   </div>
@@ -622,8 +639,8 @@ Remember: You're building a supportive relationship, not interrogating a suspect
                 {interimText && (
                   <div className={`flex flex-col ${interimText.speaker === 'user' ? 'items-end' : 'items-start'} animate-pulse`}>
                     <div className={`px-5 py-3 rounded-2xl max-w-[85%] opacity-70 ${interimText.speaker === 'user'
-                        ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
-                        : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
+                      ? 'bg-blue-600/10 border border-blue-500/20 text-blue-900 rounded-tr-sm'
+                      : 'bg-emerald-600/10 border border-emerald-500/20 text-emerald-900 rounded-tl-sm'
                       }`}>
                       <p className={`text-[10px] font-bold uppercase tracking-widest mb-1.5 ${interimText.speaker === 'user' ? 'text-blue-400' : 'text-emerald-400'
                         }`}>

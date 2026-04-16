@@ -20,7 +20,7 @@ const COUNSELORS: Counselor[] = [
     name: 'Engineering Career Advisor',
     specialization: 'Engineering, Technology, IT',
     description: 'Expert guidance for IIT, NIT, and tech career paths',
-    avatar_url: '/counselors/male3.png',
+    avatar_url: '/counselors/engineering.png',
   },
   {
     id: '2',
