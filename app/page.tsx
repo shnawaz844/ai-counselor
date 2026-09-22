@@ -1,112 +1,123 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { MessageSquare, Headphones, ChevronDown, Menu } from 'lucide-react'
-import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { MessageSquare, Headphones, ChevronDown, Menu, Sparkles, GraduationCap, ArrowRight, ShieldCheck, Stethoscope, Briefcase, Code, Compass, Play } from "lucide-react";
+import Image from "next/image";
+import { useState, useRef } from "react";
+import EmversityLogo from "@/components/EmversityLogo";
 
 interface Counselor {
-  id: string
-  name: string
-  specialization: string
-  description: string
-  avatar_url: string
+  id: string;
+  name: string;
+  specialization: string;
+  description: string;
+  avatar_url: string;
 }
 
 const COUNSELORS: Counselor[] = [
-
   {
-    id: '1',
-    name: 'Engineering Career Advisor',
-    specialization: 'Engineering, Technology, IT',
-    description: 'Expert guidance for IIT, NIT, and tech career paths',
-    avatar_url: '/counselors/male3.png',
+    id: "1",
+    name: "Engineering Career Advisor",
+    specialization: "Engineering, Technology, IT",
+    description: "Expert guidance for IIT, NIT, tech career tracks, and software industry pathways.",
+    avatar_url: "/counselors/male3.png",
   },
   {
-    id: '2',
-    name: 'Medical & Healthcare Counselor',
-    specialization: 'Medical, Healthcare, Pharmacy',
-    description: 'Guidance for NEET, medical colleges, and healthcare careers',
-    avatar_url: '/counselors/medical.jpg',
+    id: "2",
+    name: "Medical & Healthcare Counselor",
+    specialization: "Allied Health, Nursing, Medical",
+    description: "Guidance for hospital internships, Allied Health degree programs, and clinical careers.",
+    avatar_url: "/counselors/medical.jpg",
   },
   {
-    id: '3',
-    name: 'Commerce & Business Specialist',
-    specialization: 'Commerce, Business, Finance',
-    description: 'Career guidance for commerce streams and business management',
-    avatar_url: '/counselors/commerce.jpg',
+    id: "3",
+    name: "Commerce & Business Specialist",
+    specialization: "Commerce, Business, Finance",
+    description: "Career pathways for corporate management, banking, financial analytics, and commerce.",
+    avatar_url: "/counselors/commerce.jpg",
   },
   {
-    id: '4',
-    name: 'Arts & Humanities Guide',
-    specialization: 'Arts, Humanities, Social Sciences',
-    description: 'Guidance for liberal arts, social sciences, and humanities',
-    avatar_url: '/counselors/cs.png',
+    id: "4",
+    name: "Arts & Humanities Guide",
+    specialization: "Arts, Media, Social Sciences",
+    description: "Personalized advice for communication, public administration, and creative careers.",
+    avatar_url: "/counselors/cs.png",
   },
   {
-    id: '5',
-    name: 'Computer Science Expert',
-    specialization: 'CS, AI, Software Development',
-    description: 'Comprehensive guidance for computer science and AI careers',
-    avatar_url: '/counselors/cs.jpg',
+    id: "5",
+    name: "Computer Science & AI Expert",
+    specialization: "CS, AI, Cloud & Data",
+    description: "High-impact mentorship for modern AI engineering, fullstack development, and tech placement.",
+    avatar_url: "/counselors/cs.jpg",
   },
   {
-    id: '6',
-    name: 'Entrepreneurship Coach',
-    specialization: 'Entrepreneurship, Startups, Business',
-    description: 'Guidance for aspiring entrepreneurs and startup founders',
-    avatar_url: '/counselors/male4.png',
+    id: "6",
+    name: "Hospitality & Management Coach",
+    specialization: "Hospitality, Tourism, Aviation",
+    description: "Global career training for international luxury hospitality, airlines, and service leadership.",
+    avatar_url: "/counselors/male4.png",
   },
-]
+];
 
 export default function HomePage() {
-  const [counselors] = useState<Counselor[]>(COUNSELORS)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const counselorsRef = useRef<HTMLDivElement>(null)
+  const [counselors] = useState<Counselor[]>(COUNSELORS);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const counselorsRef = useRef<HTMLDivElement>(null);
 
   const scrollToCounselors = () => {
-    counselorsRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+    counselorsRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-emerald-500/30">
-      {/* Premium modern Animated background glow */}
+    <div className="min-h-screen bg-[#0A0A0A] text-white font-sans selection:bg-[#E8654A]/30 selection:text-white overflow-x-hidden">
+      {/* Ambient background glow matching Emversity */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/5 blur-[120px] rounded-full mix-blend-multiply" />
-        <div className="absolute top-[30%] right-[-10%] w-[40%] h-[60%] bg-teal-400/5 blur-[150px] rounded-full mix-blend-multiply" />
+        <div className="absolute top-[-10%] right-[-5%] w-[650px] h-[650px] bg-gradient-to-b from-[#98230a]/25 via-[#E8654A]/15 to-transparent blur-[140px] rounded-full" />
+        <div className="absolute top-[35%] left-[-10%] w-[500px] h-[500px] bg-[#E8654A]/10 blur-[150px] rounded-full" />
       </div>
 
-      {/* Navigationsssss */}
-      <nav className="fixed top-0 w-full border-b border-border bg-background/80 backdrop-blur-xl z-50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition group z-50">
-            <div className="relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-card rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.1)] group-hover:scale-105 transition-transform border border-border/50">
-              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-OGfdWEWq236e8EPK5HhGW8ckUQaqXU.png" alt="Parth Gautam Foundation" className="w-full h-full object-contain p-1.5" />
-            </div>
-            <div className="flex flex-col justify-center">
-              <div className="font-extrabold text-sm sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">PARTH GAUTAM</div>
-              <div className="text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest font-medium">AI Career Guide</div>
-            </div>
+      {/* Top Announcement Bar */}
+      <div className="bg-gradient-to-r from-[#C8654A] via-[#D85A3A] to-[#C8654A] text-white text-center py-2 px-4 text-xs font-semibold tracking-wide relative overflow-hidden z-50">
+        <span className="flex items-center justify-center gap-2">
+          <GraduationCap className="w-4 h-4" />
+          <span>Emversity Career Skilling · Admissions & Counseling Open</span>
+          <button onClick={scrollToCounselors} className="underline hover:no-underline font-bold ml-1 cursor-pointer">
+            Explore Advisors →
+          </button>
+        </span>
+      </div>
+
+      {/* Navigation Bar */}
+      <nav className="sticky top-0 w-full border-b border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl z-50 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 py-3.5 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition">
+            <EmversityLogo subtitle="AI Counselor" className="h-6 md:h-7" />
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-4">
             <Link href="/history">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-full px-5 font-semibold transition-colors">
+              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-5 text-sm font-medium transition-colors">
                 History
               </Button>
             </Link>
             <Link href="/profile">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-muted rounded-full px-5 font-semibold transition-colors">
+              <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 rounded-full px-5 text-sm font-medium transition-colors">
                 Profile
               </Button>
             </Link>
+            <Button
+              onClick={scrollToCounselors}
+              className="rounded-full px-6 bg-gradient-to-r from-[#E8654A] to-[#F97316] text-white font-bold text-xs hover:opacity-95 shadow-md shadow-[#E8654A]/30 border-0"
+            >
+              Start Consultation
+            </Button>
           </div>
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 text-neutral-300 hover:text-white z-50 transition-transform active:scale-95"
+            className="md:hidden p-2 text-white/70 hover:text-white z-50"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Menu className="w-6 h-6" />
@@ -114,176 +125,215 @@ export default function HomePage() {
         </div>
 
         {/* Mobile Nav Dropdown */}
-        <div className={`md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-xl border-b border-border shadow-2xl py-4 px-6 flex flex-col gap-3 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-          <Link href="/history" onClick={() => setMobileMenuOpen(false)}>
-            <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted h-12 rounded-xl text-base font-medium">
-              History
-            </Button>
-          </Link>
-          <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
-            <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted h-12 rounded-xl text-base font-medium">
-              Profile
-            </Button>
-          </Link>
-        </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden w-full bg-[#0E0E12] border-b border-white/10 p-5 flex flex-col gap-3">
+            <Link href="/history" onClick={() => setMobileMenuOpen(false)}>
+              <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 h-11 rounded-xl">
+                History
+              </Button>
+            </Link>
+            <Link href="/profile" onClick={() => setMobileMenuOpen(false)}>
+              <Button variant="ghost" className="w-full justify-start text-white/80 hover:text-white hover:bg-white/10 h-11 rounded-xl">
+                Profile
+              </Button>
+            </Link>
+          </div>
+        )}
       </nav>
 
-      {/* Hero Landing Section */}
-      <section className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden pt-20">
-        {/* Background Images with better modern scaling */}
-        <div className="absolute inset-0 z-0">
-          <div className="relative w-full h-full">
-            {/* Desktop Image */}
-            <div className="hidden md:block absolute top-20 inset-x-0 bottom-0 opacity-80">
-              <Image
-                src="/parth-gautam-umesh-gautam.png"
-                alt="AI Career Guidance - Parth Gautam"
-                fill
-                priority
-                className="object-cover object-top"
-              />
-            </div>
-            {/* Mobile Image */}
-            <div className="block md:hidden absolute top-20 inset-x-0 bottom-0 opacity-100">
-              <Image
-                src="/hero-mobile.jpg"
-                alt="AI Career Guidance - Parth Gautam Mobile"
-                fill
-                priority
-                className="object-cover object-top"
-              />
-              <div className="absolute inset-0 bg-black/30 md:hidden" />
-            </div>
-            {/* Hero images with full visibility */}
-
-          </div>
+      {/* Hero Section */}
+      <section className="relative z-10 pt-16 md:pt-24 pb-16 px-6 max-w-7xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-xs font-semibold text-white/90 tracking-wide mb-6">
+          <span className="w-2 h-2 rounded-full bg-[#E8654A] animate-pulse" />
+          <span>India&apos;s Career Skilling & Employment Platform</span>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center mt-[-5dvh]">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 shadow-lg backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            AI-Powered Career Guidance
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-[-1.5px] md:tracking-[-2.5px] leading-[1.08] text-white max-w-4xl mx-auto mb-6">
+          From Classroom <br />
+          <span className="bg-gradient-to-r from-[#f26a3d] via-[#f97316] to-[#c79f33] bg-clip-text text-transparent">
+            to Career Clarity.
+          </span>
+        </h1>
+
+        <p className="text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto mb-8">
+          Personalized 1-on-1 AI career counseling tailored to your strengths, academic passions, and industry ambitions in Healthcare, Technology, and Global Pathways.
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Button
+            onClick={scrollToCounselors}
+            size="lg"
+            className="h-13 px-8 rounded-full text-base font-bold bg-gradient-to-r from-[#E8654A] to-[#F97316] hover:opacity-95 text-white shadow-[0_0_30px_rgba(232,101,74,0.4)] transition-all hover:scale-105 active:scale-95 border-0 cursor-pointer"
+          >
+            <span>Choose Your Counselor</span>
+            <ChevronDown className="ml-2 w-4 h-4" />
+          </Button>
+          <Link href="/history">
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-13 px-8 rounded-full text-base font-bold border-white/30 text-white hover:bg-white/10 hover:text-white transition-all hover:scale-105"
+            >
+              Past Guidance Sessions
+            </Button>
+          </Link>
+        </div>
+
+        <p className="text-xs text-white/50 mt-6 flex items-center justify-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-[#E8654A]" />
+          Industry Skilling by Emversity · Approved Training Partner of NSDC
+        </p>
+
+        {/* Key Domain Badges */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-16 max-w-4xl mx-auto text-left">
+          <div className="bg-[#111114] p-5 rounded-3xl border border-white/10 shadow-lg flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-[#E8654A]/20 text-[#FF8566] shrink-0">
+              <Stethoscope className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white text-base">Healthcare & Allied</h4>
+              <p className="text-xs text-white/60 mt-1">Direct hospital linkages, nursing & diagnostic careers.</p>
+            </div>
           </div>
 
-          <h1 className="text-5xl md:text-5xl lg:text-5xl font-extrabold text-white md:text-foreground mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-            Talk to AI Counselors.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">
-              Shape Your Future.
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-neutral-200 md:text-muted-foreground mb-10 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-10 delay-200 duration-700 font-medium">
-            Get instant, personalized career guidance and clarity with our intelligent AI support system. Free and accessible to everyone.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-12 delay-300 duration-700">
-            <Button
-              onClick={scrollToCounselors}
-              size="lg"
-              className="px-8 py-7 text-lg bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold rounded-full group transition-all duration-300 shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)] hover:-translate-y-1"
-            >
-              Start Your Journey
-              <ChevronDown className="ml-2 w-5 h-5 group-hover:translate-y-1 transition-transform" />
-            </Button>
+          <div className="bg-[#111114] p-5 rounded-3xl border border-white/10 shadow-lg flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-[#E8654A]/20 text-[#FF8566] shrink-0">
+              <Code className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white text-base">Technology & Engineering</h4>
+              <p className="text-xs text-white/60 mt-1">Fullstack, AI, IT engineering & placement prep.</p>
+            </div>
+          </div>
+
+          <div className="bg-[#111114] p-5 rounded-3xl border border-white/10 shadow-lg flex items-start gap-4">
+            <div className="p-3 rounded-2xl bg-amber-500/20 text-amber-300 shrink-0">
+              <Compass className="w-6 h-6" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white text-base">Global Career Tracks</h4>
+              <p className="text-xs text-white/60 mt-1">Work abroad readiness & international certification pathways.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <main ref={counselorsRef} className="max-w-7xl mx-auto px-6 py-24 relative z-10">
-        {/* Welcome Section */}
-        <div className="mb-16 text-center max-w-3xl mx-auto">
-          <div className="mb-10">
-            <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 tracking-tight">
-              Welcome to Parth Gautam Foundation
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Choose an AI counselor to get personalized career guidance tailored exactly to your strengths. Start with an insightful chat or a real-time voice consultation.
-            </p>
+      {/* Counselors Grid (Matches Reference Screenshot Format) */}
+      <main ref={counselorsRef} className="max-w-7xl mx-auto px-6 py-16 relative z-10 border-t border-white/10">
+        <div className="mb-10 text-left">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8654A]/15 border border-[#E8654A]/30 text-[#FF8566] text-xs font-semibold mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#E8654A]" />
+            <span>Interactive AI Advisors</span>
           </div>
-
-          {/* Quick Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
-            {[
-              { label: "Expert Counselors", value: "6+" },
-              { label: "Available for Guidance", value: "24/7" },
-              { label: "100% Accessible", value: "Free" }
-            ].map((stat, idx) => (
-              <div key={idx} className="bg-card backdrop-blur-sm border border-border rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-muted/50 hover:border-emerald-500/30 transition-all duration-300 group">
-                <div className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 mb-2 group-hover:scale-110 transition-transform">
-                  {stat.value}
-                </div>
-                <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+            Select Your Emversity Career Counselor
+          </h2>
+          <p className="text-sm text-white/60 mt-1 max-w-2xl">
+            Choose an AI mentor for real-time voice consultations or text-based roadmap generation.
+          </p>
         </div>
 
-        {/* Counselors Grid */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground">Select Your Counselor</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {counselors.map((counselor) => (
+        {/* Redesigned Card Grid Matching the Reference Screenshot */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {counselors.map((counselor) => {
+            return (
               <div
                 key={counselor.id}
-                className="group flex flex-col bg-card border border-border rounded-3xl overflow-hidden hover:border-emerald-500/50 transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:-translate-y-2"
+                className="group relative flex flex-col justify-end overflow-hidden rounded-[26px] bg-[#0A0A0A] border border-white/10 hover:border-[#E8654A]/60 shadow-2xl transition-all duration-300 hover:shadow-[0_0_35px_rgba(232,101,74,0.25)] hover:-translate-y-1 min-h-[420px] w-full"
               >
-                {/* Image Container */}
-                <div className="relative h-56 md:h-64 bg-neutral-800 overflow-hidden shrink-0">
+                {/* Warm Ambient Spotlight in background (Matches Emversity aesthetic) */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#C8654A]/35 via-[#98230a]/20 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500" />
+                <div className="absolute top-1/4 left-0 w-32 h-32 bg-[#E8654A]/10 rounded-full blur-3xl pointer-events-none" />
+
+                {/* Top Left Frosted Play Button (Matches screenshot) */}
+                <Link
+                  href={`/voice/new?counselor=${counselor.id}`}
+                  className="absolute top-3.5 left-3.5 z-20 w-10 h-10 rounded-full bg-black/45 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:bg-[#E8654A] group-hover:border-[#E8654A] transition-all duration-300"
+                >
+                  <Play className="w-4 h-4 fill-white translate-x-0.5" />
+                </Link>
+
+                {/* Top Right Track Badge */}
+                <div className="absolute top-3.5 right-3.5 z-20">
+                  <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15 text-white/85 tracking-wide">
+                    {counselor.specialization.split(",")[0]}
+                  </span>
+                </div>
+
+                {/* Full Portrait Background Image */}
+                <div className="absolute inset-0 w-full h-full">
                   <Image
                     src={counselor.avatar_url}
                     alt={counselor.name}
                     fill
-                    className="object-cover object-top group-hover:scale-105 group-hover:rotate-1 transition-all duration-700 ease-out"
+                    className="object-cover object-top filter brightness-95 contrast-105 group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-90" />
-
-                  {/* Floating specialty badge */}
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-neutral-950/70 backdrop-blur-md rounded-full border border-white/10 text-xs font-semibold text-emerald-300">
-                    {counselor.specialization.split(',')[0]}
-                  </div>
+                  {/* Seamless bottom fade gradient into solid dark card base */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/95 to-transparent" />
                 </div>
 
-                {/* Content */}
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-emerald-400 transition-colors">{counselor.name}</h3>
-                  <p className="text-sm font-medium text-emerald-500/80 mb-4">{counselor.specialization}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-8 flex-1">
+                {/* Card Content Overlay (Matches screenshot typography & layout) */}
+                <div className="relative z-20 p-5 pt-10 flex flex-col justify-end">
+                  <h3 className="font-bold text-lg md:text-xl text-white tracking-tight leading-snug group-hover:text-[#FF8566] transition-colors">
+                    {counselor.name}
+                  </h3>
+
+                  <p className="text-xs text-white/70 line-clamp-2 mt-1 font-normal leading-relaxed">
                     {counselor.description}
                   </p>
 
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                    <Link href={`/chat/new?counselor=${counselor.id}`} className="flex-1">
-                      <Button
-                        size="default"
-                        className="w-full bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold gap-2 h-12 rounded-xl shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all duration-300"
-                      >
-                        <MessageSquare className="w-5 h-5" />
-                        Chat Now
-                      </Button>
-                    </Link>
-                    <Link href={`/voice/new?counselor=${counselor.id}`} className="flex-1">
-                      <Button
-                        size="default"
-                        variant="outline"
-                        className="w-full bg-background border-border hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-black text-emerald-600 gap-2 h-12 rounded-xl transition-all duration-300"
-                      >
-                        <Headphones className="w-5 h-5" />
-                        Voice Call
-                      </Button>
-                    </Link>
+                  <div className="flex items-center gap-1.5 mt-2.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#E8654A]" />
+                    <span className="text-[11px] font-medium text-white/85 tracking-wide">
+                      Emversity Career Advisory Track
+                    </span>
+                  </div>
+
+                  {/* Stat + Consultation Actions */}
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    <div className="flex items-center justify-end mb-3 text-[11px] text-white/60">
+                      <span className="text-[#FF8566] font-semibold">Live Interactive</span>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link href={`/chat/new?counselor=${counselor.id}`} className="flex-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="w-full h-8 rounded-full text-xs font-semibold border-white/20 text-white hover:bg-white/10 hover:text-white"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5 mr-1 text-[#E8654A]" />
+                          Chat
+                        </Button>
+                      </Link>
+                      <Link href={`/voice/new?counselor=${counselor.id}`} className="flex-1">
+                        <Button
+                          size="sm"
+                          className="w-full h-8 rounded-full text-xs font-semibold bg-gradient-to-r from-[#E8654A] to-[#F97316] text-white hover:opacity-95 shadow-md shadow-[#E8654A]/25 border-0"
+                        >
+                          <Headphones className="w-3.5 h-3.5 mr-1" />
+                          Voice Call
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-[#070708] py-8 px-6 text-xs text-white/60">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <EmversityLogo subtitle="AI Counselor" className="h-6" />
+          <p>© {new Date().getFullYear()} Emversity Platform. An Approved Training Partner of NSDC. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
-  )
+  );
 }

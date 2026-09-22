@@ -8,24 +8,16 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'CareerGuidance AI - AI Career Counselors for Students',
-  description: 'Get personalized career guidance from AI counselors. Plan your career, choose the right college and courses with expert advice.',
-  generator: 'v0.app',
+  title: 'Emversity AI Counselor | Career Guidance & Industry Skilling',
+  description: 'Personalized 1-on-1 AI career counseling, degree program guidance, and industry placement tracks powered by Emversity.',
+  generator: 'Emversity',
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-dark-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
+    shortcut: '/favicon.ico',
     apple: '/apple-icon.png',
   },
 }
@@ -38,7 +30,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="font-sans antialiased">
+        <body className="font-sans antialiased bg-[#0A0A0A] text-white">
           {children}
           <Analytics />
         </body>
